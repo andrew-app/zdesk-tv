@@ -30,7 +30,7 @@ start = 0
 
 stop = 25
 
-print(f"Showing {start+1} to {stop+1} of {tickets} tickets. 1 of {pages} page(s)).")
+print(f"Showing {start+1} to {stop} of {tickets} tickets. 1 of {pages} page(s)).")
 
 
 # show table function
@@ -67,48 +67,55 @@ def validpage(p):
         return val
 
 
+    
+    
+
+commands = ["-h","-p","-t"]
+
+def help(r):
+    print("These are commands:")
+
+def list_tickets(page_number):
+    test = validpage(page_number)
+
+    if test > 0:
+        test2 = test - 1
+        start = test2*25
+        stop = start + 25
+        print(f"Showing {start+1} to {stop} of {tickets} tickets. {test} of {pages} page(s)).")
+        listview(start,stop)
+    else:
+        print(f"invalid ticket page (Min: 1, Max: {pages}).")
+
+def show_ticket(ticket_number):
+    print("ticket info")
+ 
+exe = {0 : help,
+       1 : list_tickets,
+       2 : show_ticket
+}
+
 listview(start, stop)
 
 
-commands = ["-h","-p"]
-
 while 1:
-
-
 
     usrin = input(">>>")
 
     if usrin == "exit":
         print("Session Ended.")
         exit()
+    
+    arg = slice(2)
+    cmd = usrin[arg]
 
-    elif usrin[0] == '-' and usrin[1] == 'p': # check if page command argument has been inputted
-        current_page = []
-        arg = len(usrin)
+    arg2 = slice(3,5)
+    inval = usrin[arg2]
 
-        for i in range(3,arg):
-            current_page.append(usrin[i])
-
-        test = validpage(current_page)
-
-        if test > 0:
-            test2 = test - 1
-            start = test2*25
-            stop = start + 25
-            print(f"Showing {start+1} to {stop} of {tickets} tickets. {test} of {pages} page(s)).")
-            listview(start,stop)
-
-
-        else:
-            print(f"Invalid page number. (Min: 1, Max: {pages})")
-
-
-
-
-    elif usrin == '-h' and len(usrin) == 2: #help command
-        print("These are commands: ")
-
+    if cmd in commands:
+        i = commands.index(cmd)
+        exe[i](inval)
     else:
-        print("Invalid command. (use -h for help).")
+        print("Invalid command (use -h for help).")
 
-# TODO: extendable way to check for correct commands
+
