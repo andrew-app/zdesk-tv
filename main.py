@@ -1,11 +1,21 @@
 from tabulate import tabulate
 import math
 import json
+import pickle
+import requests
+from requests.auth import HTTPBasicAuth
+
+creds = pickle.load( open( "creds.p", "rb" ) )
+
+
+url = f"https://{creds['subd']}.zendesk.com/api/v2/tickets"
 
 
 
-with open('mytickets.json') as f: # load tickets locally stored
-    x = json.load(f)
+response = requests.get(url, auth=HTTPBasicAuth(creds['usrn'], creds['pw']))
+
+x = response.json()
+
 
 data = x['tickets']
 
@@ -13,30 +23,40 @@ print("Welcome to the Zendesk Ticket Viewer.")
 
 tickets = len(data) # total tickets
 
-if tickets == 0:
+
+
+if tickets >= 25:
+    start = 0
+
+    stop = 25
+
+elif tickets == 0:
     print("No tickets were detected.")
     exit()
 
+else:
+    start = 0
 
-headers = ["Ticket # ID", "Subject", "Requester ID", "Creation Date"] #table headers
+    stop = tickets
 
-
-
-print("Use -h for help.")
 
 pages = math.floor(tickets/25)
 
+if pages == 0:
+    pages = 1
+
+
 extra = tickets%25
-exp = False
+
+exp = False #extra page boolean
 
 if extra != 0:
     pages = pages + 1
 
     exp = True
 
-start = 0
 
-stop = 25
+print("Use -h for help.")
 
 print(f"Showing {start+1} to {stop} of {tickets} tickets. 1 of {pages} page(s)).")
 
@@ -48,16 +68,20 @@ def listview(a, b):
     rid = []  # store requester IDs
     crdate = []  # creation dates
 
-    for i in range(a, b):
-        tid.append(data[i]['id'])
-        subj.append(data[i]['subject'])
-        rid.append(data[i]['requester_id'])
-        crdate.append(data[i]['created_at'])
+
+    for index in range(a, b):
+        tid.append(data[index]['id'])
+        subj.append(data[index]['subject'])
+        rid.append(data[index]['requester_id'])
+        crdate.append(data[index]['created_at'])
+
+    headers = ["Ticket # ID", "Subject", "Requester ID", "Creation Date"] #table headers
 
     table = zip(tid, subj, rid, crdate) #index elements from each category
 
     print(tabulate(table, headers, tablefmt="fancy_grid")) #shows table
 
+#Check if page exists for list_tickets
 def validpage(p):
 
 
@@ -75,11 +99,15 @@ def validpage(p):
 
 
 
-commands = ["-h","-p","-t"]
 
+# Display helpful commands to user
 def help(r):
-    print("These are commands:")
+    print("These are the available commands:")
+    print(f"-p <page_number> = view ticket page.")
+    print(f"-t <ticket_number> = view individual ticket details.")
+    print("exit = Terminate session")
 
+#List tickets page
 def list_tickets(page_number):
 
     test = validpage(page_number)
@@ -101,10 +129,12 @@ def list_tickets(page_number):
         listview(start,stop)
     else:
         print(f"Invalid ticket page (Min: 1, Max: {pages}).")
-
+#Show individual ticket
 def show_ticket(ticket_number):
+
     try:
         val = int(ticket_number)
+
         if val <= 0 or val > tickets:
             print(f"Invalid Ticket Number (Min: 1, Max: {tickets}).")
         else:
@@ -118,11 +148,15 @@ def show_ticket(ticket_number):
             print(f"Invalid Ticket Number (Min: 1, Max: {tickets}).")
 
 
+commands = ["-h","-p","-t"]
+
+
+# determines which function to excecute
 exe = {0 : help,
        1 : list_tickets,
        2 : show_ticket
 }
-
+#At start up view first 25 tickets
 listview(start, stop)
 
 
@@ -137,11 +171,12 @@ while 1:
     arg = slice(2)
     cmd = usrin[arg]
 
-    arg2 = slice(3,5)
+    arg2 = slice(3,8) #4 bit buffer for correct input value
     inval = usrin[arg2]
 
     if cmd in commands:
         i = commands.index(cmd)
         exe[i](inval)
+
     else:
         print("Invalid command (use -h for help).")
