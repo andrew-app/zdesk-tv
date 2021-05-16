@@ -42,9 +42,6 @@ else:
 
 pages = math.floor(tickets/25)
 
-if pages == 0:
-    pages = 1
-
 
 extra = tickets%25
 
