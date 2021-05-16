@@ -4,7 +4,7 @@ A python CLI app for viewing customer support tickets. The App requests tickets 
 
 # Setup
 1. Clone repository. 
-2. Install required dependencies. `$ pip3 install -r requirements.txt"
+2. Install required dependencies. `$ pip3 install -r requirements.txt`
 3. Navigate to folder. `$ cd path/to/repo` 
 4. Run the setup script to add credentials for authentication. `$ python3 setup.py`
 5. Run main script to view tickets `$ python3 main.py`
