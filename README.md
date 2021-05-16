@@ -9,7 +9,12 @@ A python CLI app for viewing customer support tickets. The App requests tickets 
 4. Run the setup script to add credentials for authentication. `$ python3 setup.py`
 5. Run main script to view tickets `$ python3 main.py`
 
+# Usage
 
-To view details of a single ticket use command "-t <page_number>"
+* To view details of a single ticket `>>> -t <ticket # ID>`
 
 ![Alt Text](ticket1.gif)
+
+* To list tickets for a specific page `>>> -p <page_number>`
+
+
