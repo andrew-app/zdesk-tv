@@ -3,4 +3,5 @@ A python CLI app for viewing customer support tickets. The App requests tickets 
  
  
 To view a single ticket:
+
 ![Alt Text](ticket1.gif)
