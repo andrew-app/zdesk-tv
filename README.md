@@ -11,10 +11,12 @@ A python CLI app for viewing customer support tickets. The App requests tickets 
 
 # Usage
 
-* To view details of a single ticket `>>> -t <ticket # ID>`
+* To view details of a single ticket `>>>-t <ticket # ID>`
 
 ![Alt Text](ticket1.gif)
 
-* To list tickets for a specific page `>>> -p <page_number>`
+* To list tickets for a specific page `>>>-p <page_number>`
+
+![Alt Text](ticket-list.gif)
 
 
