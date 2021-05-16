@@ -23,6 +23,6 @@ A python CLI app for viewing customer support tickets. The App requests tickets 
 # Testing
 
 * Tested on python 3.9.4
-* Tested for correct ouput(Happy tests).
+* Tested for correct ouput(Happy path tests).
 * Handling incorrect commands and invalid page and ticket numbers.
 * Authentication in setup.py tested for handling incorrect credentials.
