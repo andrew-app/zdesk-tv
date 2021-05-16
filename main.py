@@ -118,9 +118,13 @@ def list_tickets(page_number):
         listview(start,stop)
 
     elif test == pages and exp is True:
-        test2 = test - 1
-        start = test2*25
-        stop = start + extra
+        if pages > 1:
+            test2 = test - 1
+            start = test2*25
+            stop = start + extra
+        else:
+            start = 0
+            stop = extra
 
         print(f"Showing {start+1} to {stop} of {tickets} tickets. {test} of {pages} page(s)).")
         listview(start,stop)
