@@ -9,12 +9,20 @@ with open('mytickets.json') as f: # load tickets locally stored
 
 data = x['tickets']
 
+print("Welcome to the Zendesk Ticket Viewer.")
 
 tickets = len(data) # total tickets
 
+if tickets == 0:
+    print("No tickets were detected.")
+    exit()
+
+
 headers = ["Ticket # ID", "Subject", "Requester ID", "Creation Date"] #table headers
 
-print("Type Ticket Number ID for individual ticket details.")
+
+
+print("Use -h for help.")
 
 pages = math.floor(tickets/25)
 
@@ -52,11 +60,10 @@ def listview(a, b):
 
 def validpage(p):
 
-    str1 = ''.join(str(e) for e in p)
 
     try:
 
-        val = int(str1)
+        val = int(p)
 
         if val > pages:
             val = 0
@@ -67,8 +74,6 @@ def validpage(p):
         return val
 
 
-    
-    
 
 commands = ["-h","-p","-t"]
 
@@ -76,20 +81,43 @@ def help(r):
     print("These are commands:")
 
 def list_tickets(page_number):
+
     test = validpage(page_number)
 
-    if test > 0:
+    if test > 0 and exp is False:
         test2 = test - 1
         start = test2*25
         stop = start + 25
+
+        print(f"Showing {start+1} to {stop} of {tickets} tickets. {test} of {pages} page(s)).")
+        listview(start,stop)
+
+    elif test == pages and exp is True:
+        test2 = test - 1
+        start = test2*25
+        stop = start + extra
+
         print(f"Showing {start+1} to {stop} of {tickets} tickets. {test} of {pages} page(s)).")
         listview(start,stop)
     else:
-        print(f"invalid ticket page (Min: 1, Max: {pages}).")
+        print(f"Invalid ticket page (Min: 1, Max: {pages}).")
 
 def show_ticket(ticket_number):
-    print("ticket info")
- 
+    try:
+        val = int(ticket_number)
+        if val <= 0 or val > tickets:
+            print(f"Invalid Ticket Number (Min: 1, Max: {tickets}).")
+        else:
+            print(f"Displaying details for ticket # {val}.")
+            print(f"Subject: {data[val - 1]['subject']}")
+            print(f"Requester ID: {data[val - 1]['requester_id']}")
+            print(f"Created: {data[val - 1]['created_at']}")
+            print(f"{data[val - 1]['description']}")
+
+    except ValueError:
+            print(f"Invalid Ticket Number (Min: 1, Max: {tickets}).")
+
+
 exe = {0 : help,
        1 : list_tickets,
        2 : show_ticket
@@ -105,7 +133,7 @@ while 1:
     if usrin == "exit":
         print("Session Ended.")
         exit()
-    
+
     arg = slice(2)
     cmd = usrin[arg]
 
@@ -117,5 +145,3 @@ while 1:
         exe[i](inval)
     else:
         print("Invalid command (use -h for help).")
-
-
