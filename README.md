@@ -8,6 +8,7 @@ A python CLI app for viewing customer support tickets. The App requests tickets 
 3. Navigate to folder. `$ cd path/to/repo` 
 4. Run the setup script to add credentials for authentication. `$ python3 setup.py`
 5. Run main script to view tickets `$ python3 main.py`
+6. To end session use `>>>exit`
 
 # Usage
 
@@ -19,4 +20,9 @@ A python CLI app for viewing customer support tickets. The App requests tickets 
 
 ![Alt Text](page2.gif)
 
+# Testing
 
+* Tested on python 3.9.4
+* Tested for correct ouput(Happy tests).
+* Handling incorrect commands and invalid page and ticket numbers.
+* Authentication in setup.py tested for handling incorrect credentials.
