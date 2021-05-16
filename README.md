@@ -17,6 +17,6 @@ A python CLI app for viewing customer support tickets. The App requests tickets 
 
 * To list tickets for a specific page `>>>-p <page_number>`
 
-![Alt Text](ticket-list.gif)
+![Alt Text](page2.gif)
 
 
